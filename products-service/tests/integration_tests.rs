@@ -61,7 +61,7 @@ async fn should_return_a_product_by_id() {
 fn spawn_app() -> String {
     let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind listener.");
     let port = listener.local_addr().unwrap().port();
-    let server = products_service::run(listener).expect("Failed to start test server");
+    let server = products_service::startup::run(listener).expect("Failed to start test server");
 
     let _ = tokio::spawn(server);
 
