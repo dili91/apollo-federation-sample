@@ -22,7 +22,7 @@ async fn should_be_up() {
 }
 
 #[actix_rt::test]
-async fn should_return_a_list_of_products(){
+async fn should_return_a_list_of_products() {
     // Arrange
     let address = spawn_app();
     let client = reqwest::Client::new();
@@ -40,8 +40,8 @@ async fn should_return_a_list_of_products(){
 }
 
 #[actix_rt::test]
-async fn should_return_a_product_by_id(){
-// Arrange
+async fn should_return_a_product_by_id() {
+    // Arrange
     let address = spawn_app();
     let client = reqwest::Client::new();
     let product_id = "123";

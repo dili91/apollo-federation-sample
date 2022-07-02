@@ -1,5 +1,5 @@
 use std::net::TcpListener;
-use products_service::run;
+use products_service::startup::run;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
