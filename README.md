@@ -10,7 +10,7 @@ The stack is made of 2 basic sample microservices:
 
 Both services expose a GraphQL interface to their data stores. 
 
-An apollo gateway app then registers the above 2 graphs as subgraphs and expose their data via the federation gateway
+An [federation-gateway](./federation-gateway) based on Apollo then registers the above 2 graphs as subgraphs and expose their data via the federation gateway
 
 ## Run it
 //todo
