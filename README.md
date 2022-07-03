@@ -2,6 +2,11 @@
 
 A sample stack to get familiar with [Apollo Federation gateway](https://www.apollographql.com/docs/federation/) features. 
 
+## Purpose
+
+Objective of this project is to simply get familiar with the Apollo stack and see how it behaves across completely different languages.
+
+
 ## The stack 
 
 The stack is made of 2 basic sample microservices: 
@@ -15,6 +20,12 @@ An [federation-gateway](./federation-gateway) based on Apollo then registers the
 ## Run it
 //todo
 
-## Purpose
+## todo
 
-Objective of this project is to simply get familiar with the Apollo stack and see how it behaves across completely different stacks.
+- [ ] mutations
+- [ ] subscriptions ? 
+- [ ] authentication
+- [ ] Javalin app
+- [ ] federation setup
+- [ ] Docker-compose and doc
+- [ ] Basic CI ?
