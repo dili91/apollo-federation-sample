@@ -4,7 +4,7 @@ use products_service::routes::ProductsList;
 use std::net::TcpListener;
 
 #[actix_rt::test]
-async fn should_be_up() {
+async fn up_should_return_200() {
     // Arrange
     let address = spawn_app().await;
     let client = reqwest::Client::new();
@@ -25,7 +25,7 @@ async fn should_be_up() {
 }
 
 #[actix_rt::test]
-async fn should_return_a_list_of_products() {
+async fn list_products_should_return_200() {
     // Arrange
     let address = spawn_app().await;
     let client = reqwest::Client::new();
@@ -44,7 +44,7 @@ async fn should_return_a_list_of_products() {
 }
 
 #[actix_rt::test]
-async fn should_return_a_product_by_sku() {
+async fn get_product_by_sku_should_return_200() {
     // Arrange
     let address = spawn_app().await;
     let client = reqwest::Client::new();
@@ -64,7 +64,7 @@ async fn should_return_a_product_by_sku() {
 }
 
 #[actix_rt::test]
-async fn should_return_not_found_with_unexisting_sku() {
+async fn get_product_by_sku_should_return_404() {
     // Arrange
     let address = spawn_app().await;
     let client = reqwest::Client::new();
@@ -79,6 +79,42 @@ async fn should_return_not_found_with_unexisting_sku() {
 
     // Assert
     assert_eq!(404, response.status().as_u16());
+}
+
+#[actix_rt::test]
+async fn graphql_api_should_return_200(){
+    // Arrange
+    let address = spawn_app().await;
+    let client = reqwest::Client::new();
+
+    // Act
+    let response = client
+        .post(&format!("{}/graphql/api", &address))
+        .header("content-type", "application/json")
+        .body("{\"query\":\"introspectionQuery\"}")
+        .send()
+        .await
+        .expect("Failed to execute request.");
+
+    // Assert
+    assert!(response.status().is_success());
+}
+
+#[actix_rt::test]
+async fn graphql_ui_playground_should_return_200(){
+    // Arrange
+    let address = spawn_app().await;
+    let client = reqwest::Client::new();
+
+    // Act
+    let response = client
+        .get(&format!("{}/graphql/ui", &address))
+        .send()
+        .await
+        .expect("Failed to execute request.");
+
+    // Assert
+    assert!(response.status().is_success());
 }
 
 async fn spawn_app() -> String {
