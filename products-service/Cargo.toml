@@ -12,6 +12,11 @@ name = "products-service"
 
 [dependencies]
 actix-web = "4"
+config = "0.13.1"
+serde = { version = "1", features = ["derive"]}
+uuid = { version = "1.1.2", features = ["v4", "serde"] }
+chrono = "0.4.19"
+async-trait = "0.1.56"
 
 [dependencies.sqlx]
 version = "0.6.0"
@@ -27,5 +32,5 @@ features = [
 
 [dev-dependencies]
 actix-rt = "2.7.0"
-reqwest = "0.11.11"
+reqwest = { version = "0.11.11", features = ["json"] }
 tokio = "1.19.2"
