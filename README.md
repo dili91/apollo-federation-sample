@@ -5,8 +5,8 @@ A sample stack to get familiar with [Apollo Federation gateway](https://www.apol
 ## The stack 
 
 The stack is made of 2 basic sample microservices: 
-- A Rust based [products-service](./products-service), that simply returns the product catalog
-- A Java based users-service which is responsible of users profile informations
+- A [products-service](./products-service), that simply returns the product catalog. Based on Rust and actix-web;
+- A Java based [users-service](./users-service) which is responsible of users profile informations. Built on top of Javalin
 
 Both services expose a GraphQL interface to their data stores. 
 
