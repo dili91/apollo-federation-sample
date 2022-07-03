@@ -6,6 +6,7 @@ use uuid::Uuid;
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct Product {
     pub id: Uuid,
+    pub sku: String,
     pub name: String,
     pub description: String,
     pub price_in_minor: i32,
@@ -37,6 +38,8 @@ impl ProductsRepositoryBuilder {
 #[async_trait]
 pub trait ProductsRepositoryQueries {
     async fn list_products(&self) -> Result<Vec<Product>, Error>;
+
+    async fn get_product_by_sku(&self, sku: &str) -> Result<Product, Error>;
 }
 
 #[async_trait]
@@ -46,5 +49,13 @@ impl ProductsRepositoryQueries for ProductsRepository {
             .fetch_all(&self.pool)
             .await?;
         Ok(products)
+    }
+
+    async fn get_product_by_sku(&self, sku: &str) -> Result<Product, Error> {
+        let product = sqlx::query_as!(Product,
+            "SELECT * FROM products WHERE sku = $1", sku)
+            .fetch_one(&self.pool)
+            .await?;
+        Ok(product)
     }
 }

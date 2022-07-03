@@ -1,8 +1,6 @@
-use actix_web::test;
 use products_service::configuration::get_configuration;
-use products_service::repository::ProductsRepositoryBuilder;
+use products_service::repository::{Product, ProductsRepositoryBuilder};
 use products_service::routes::ProductsList;
-use sqlx::{Connection, PgConnection};
 use std::net::TcpListener;
 
 #[actix_rt::test]
@@ -47,22 +45,42 @@ async fn should_return_a_list_of_products() {
 }
 
 #[actix_rt::test]
-async fn should_return_a_product_by_id() {
+async fn should_return_a_product_by_sku() {
     // Arrange
     let address = spawn_app().await;
     let client = reqwest::Client::new();
-    let product_id = "123";
+    let sku = "izp-sng-cc";
 
     // Act
     let response = client
-        .get(&format!("{}/products/{}", &address, product_id))
+        .get(&format!("{}/products/{}", &address, sku))
         .send()
         .await
         .expect("Failed to execute request.");
 
     // Assert
     assert!(response.status().is_success());
-    //todo: body assertions
+    let body: Product = response.json()
+        .await.expect("failed to get JSON payload");
+    assert_eq!(sku, body.sku);
+}
+
+#[actix_rt::test]
+async fn should_return_not_found_with_unexisting_sku() {
+    // Arrange
+    let address = spawn_app().await;
+    let client = reqwest::Client::new();
+    let sku = "does-not-exist";
+
+    // Act
+    let response = client
+        .get(&format!("{}/products/{}", &address, sku))
+        .send()
+        .await
+        .expect("Failed to execute request.");
+
+    // Assert
+    assert_eq!(404, response.status().as_u16());
 }
 
 async fn spawn_app() -> String {

@@ -11,6 +11,9 @@ pub async fn list_products(products_repository: web::Data<ProductsRepository>) -
 
     match products {
         Ok(p) => HttpResponse::Ok().json(ProductsList { items: p }),
-        Err(_) => HttpResponse::InternalServerError().finish(),
+        Err(err) => match err.as_database_error() {
+            None => HttpResponse::NotFound().finish(),
+            Some(err) => HttpResponse::InternalServerError().body(err.to_string())
+        }
     }
 }
