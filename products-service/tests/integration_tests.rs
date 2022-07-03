@@ -39,8 +39,7 @@ async fn should_return_a_list_of_products() {
 
     // Assert
     assert!(response.status().is_success());
-    let body: ProductsList = response.json()
-        .await.expect("failed to get JSON payload");
+    let body: ProductsList = response.json().await.expect("failed to get JSON payload");
     assert_eq!(3, body.items.len());
 }
 
@@ -60,8 +59,7 @@ async fn should_return_a_product_by_sku() {
 
     // Assert
     assert!(response.status().is_success());
-    let body: Product = response.json()
-        .await.expect("failed to get JSON payload");
+    let body: Product = response.json().await.expect("failed to get JSON payload");
     assert_eq!(sku, body.sku);
 }
 
