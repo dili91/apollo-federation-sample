@@ -2,6 +2,7 @@ use crate::graphql::{graphql_api, graphql_playground, ProductsQuery};
 use crate::repository::ProductsRepository;
 use crate::routes::{get_product_by_sku, list_products, up};
 use actix_web::dev::Server;
+use actix_web::middleware::Logger;
 use actix_web::web::Data;
 use actix_web::{web, App, HttpServer};
 use async_graphql::{EmptyMutation, EmptySubscription, Schema};
@@ -17,6 +18,7 @@ pub fn run(
 
     let server = HttpServer::new(move || {
         App::new()
+            .wrap(Logger::default())
             .app_data(Data::new(graphql_schema.clone()))
             .app_data(Data::new(products_repository.clone()))
             .route("/up", web::get().to(up))
@@ -25,7 +27,8 @@ pub fn run(
             .route("/graphql/api", web::post().to(graphql_api))
             .route("/graphql/ui", web::get().to(graphql_playground))
     })
-    .listen(listener)?
+    .listen(listener.try_clone()?)?
     .run();
+
     Ok(server)
 }

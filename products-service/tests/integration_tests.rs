@@ -82,7 +82,7 @@ async fn get_product_by_sku_should_return_404() {
 }
 
 #[actix_rt::test]
-async fn graphql_api_should_return_200(){
+async fn graphql_api_should_return_200() {
     // Arrange
     let address = spawn_app().await;
     let client = reqwest::Client::new();
@@ -101,7 +101,7 @@ async fn graphql_api_should_return_200(){
 }
 
 #[actix_rt::test]
-async fn graphql_ui_playground_should_return_200(){
+async fn graphql_ui_playground_should_return_200() {
     // Arrange
     let address = spawn_app().await;
     let client = reqwest::Client::new();
