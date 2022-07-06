@@ -1,5 +1,5 @@
-use uuid::Uuid;
 use crate::graphql;
+use uuid::Uuid;
 
 #[derive(serde::Serialize, serde::Deserialize)]
 pub struct Product {

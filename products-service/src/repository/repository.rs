@@ -1,8 +1,8 @@
 use crate::configuration::DatabaseSettings;
-use crate::graphql;
+
 use async_trait::async_trait;
 use sqlx::{Error, PgPool};
-use uuid::Uuid;
+
 use crate::repository::Product;
 
 #[derive(Clone)]
@@ -34,7 +34,7 @@ pub trait ProductsRepositoryQueries {
 
     async fn get_product_by_sku(&self, sku: &str) -> Result<Product, Error>;
 
-    async fn insert_product(&self, ) -> Result<Product, Error>;
+    async fn insert_product(&self) -> Result<Product, Error>;
 }
 
 #[async_trait]
