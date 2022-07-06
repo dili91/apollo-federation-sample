@@ -1,9 +1,11 @@
 use crate::configuration::DatabaseSettings;
 
 use async_trait::async_trait;
-use sqlx::{Error, PgPool};
 
-use crate::repository::Product;
+use sqlx::{Error, PgPool};
+use uuid::Uuid;
+
+use crate::repository::{CreateProductRequest, Product};
 
 #[derive(Clone)]
 pub struct ProductsRepository {
@@ -34,7 +36,7 @@ pub trait ProductsRepositoryQueries {
 
     async fn get_product_by_sku(&self, sku: &str) -> Result<Product, Error>;
 
-    async fn insert_product(&self) -> Result<Product, Error>;
+    async fn create_product(&self, product: CreateProductRequest) -> Result<Uuid, Error>;
 }
 
 #[async_trait]
@@ -53,7 +55,23 @@ impl ProductsRepositoryQueries for ProductsRepository {
         Ok(product)
     }
 
-    async fn insert_product(&self) -> Result<Product, Error> {
-        todo!()
+    async fn create_product(&self, product: CreateProductRequest) -> Result<Uuid, Error> {
+        let product_id = Uuid::new_v4();
+
+        sqlx::query!(
+            r#"
+            INSERT INTO products (id, sku, name, description, price_in_minor)
+            VALUES ($1, $2, $3, $4, $5)
+            "#,
+            product_id,
+            product.sku,
+            product.name,
+            product.description,
+            product.price_in_minor,
+        )
+        .execute(&self.pool)
+        .await?;
+
+        Ok(product_id)
     }
 }

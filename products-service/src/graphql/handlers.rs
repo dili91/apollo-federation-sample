@@ -1,11 +1,11 @@
-use crate::graphql::ProductsQuery;
+use crate::graphql::{ProductsSchema};
 use actix_web::{web, HttpResponse};
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig};
-use async_graphql::{EmptyMutation, EmptySubscription, Schema};
+
 use async_graphql_actix_web::{GraphQLRequest, GraphQLResponse};
 
 pub async fn graphql_api(
-    schema: web::Data<Schema<ProductsQuery, EmptyMutation, EmptySubscription>>,
+    schema: web::Data<ProductsSchema>,
     req: GraphQLRequest,
 ) -> GraphQLResponse {
     schema.execute(req.into_inner()).await.into()

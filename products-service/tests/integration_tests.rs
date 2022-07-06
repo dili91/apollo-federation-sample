@@ -1,6 +1,6 @@
 use products_service::configuration::get_configuration;
 use products_service::repository::{Product, ProductsRepositoryBuilder};
-use products_service::routes::ProductsList;
+use products_service::routes::{CreateProductRequest, CreateProductResponse, ProductsList};
 use std::net::TcpListener;
 
 #[actix_rt::test]
@@ -79,6 +79,36 @@ async fn get_product_by_sku_should_return_404() {
 
     // Assert
     assert_eq!(404, response.status().as_u16());
+}
+
+#[actix_rt::test]
+async fn create_product_should_return_201_and_the_product_id() {
+    // Arrange
+    let address = spawn_app().await;
+    let client = reqwest::Client::new();
+
+    // Act
+    let response = client
+        .post(&format!("{}/products", &address))
+        .json(&CreateProductRequest {
+            sku: "apl-iph-13".to_string(),
+            name: "Apple Iphone 13".to_string(),
+            description: "Yet another Iphone".to_string(),
+            price_in_minor: 99000,
+        })
+        .send()
+        .await
+        .expect("Failed to execute request.");
+
+    // Assert
+    assert_eq!(
+        201,
+        response.status().as_u16(),
+        "{}",
+        response.text().await.unwrap()
+    );
+    let body: CreateProductResponse = response.json().await.expect("failed to get JSON payload");
+    assert_eq!(false, body.id.is_nil())
 }
 
 #[actix_rt::test]

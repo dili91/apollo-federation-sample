@@ -22,7 +22,7 @@ An [federation-gateway](./federation-gateway) based on Apollo then registers the
 
 ## todo
 
-- [ ] mutations
+- [x] mutations
 - [ ] subscriptions ? 
 - [ ] authentication
 - [ ] Javalin app

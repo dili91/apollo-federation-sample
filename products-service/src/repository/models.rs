@@ -10,6 +10,13 @@ pub struct Product {
     pub price_in_minor: i32,
 }
 
+pub struct CreateProductRequest {
+    pub sku: String,
+    pub name: String,
+    pub description: String,
+    pub price_in_minor: i32
+}
+
 //todo: check. Having this conversion here is meh
 impl From<Product> for graphql::Product {
     fn from(p: Product) -> Self {
